@@ -1,4 +1,4 @@
-# MMM-IPT
+# MMM-MPT
 Magic Mirror Module of Islamic Prayer Times
 
 #config 
