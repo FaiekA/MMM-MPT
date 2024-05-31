@@ -1,24 +1,26 @@
-# MMM-IPT
-Magic Mirror Module of Islamic Prayer Times
+# MMM-MPT
+Magic Mirror Module of Muslim Prayer Times
 
 #config 
 To add the module do the following which also shows the configurable values:
 
 ````javascript
-{
-    module: 'MMM-IPT',
-    position: 'bottom_right', // This can be any of the regions, best results in center regions
-    config: {
-        updateInterval: 4 * 60 * 1000, // every 4 mins
-		    latitude: 37.861676,  //defaults to Konya / Meram.
-		    longitude: 32.4641803,
-		    timeZoneString: "Europe/Istanbul", // https://www.php.net/manual/en/timezones.php
-		    method: 13, //You can see in below the config.
-		    school: 1, //"school" - Optional. 0 for Shafii, 1 for Hanfi. If you leave this empty, it defaults to Shafii.
-		    adhanSrc: '', // If you want to play azan add the config to this link 'http://www.islamcan.com/audio/adhan/azan1.mp3'.
-		    css_class: 'bright medium',
-    }
-},
+	{
+	    module: 'MMM-MPT',
+		animateIn: 'backInRight',
+		animateOut: 'backOutRight',			
+	    position: 'bottom_right', // This can be any of the regions, best results in center regions
+	    config: {
+                updateInterval: 1 * 60 * 60 * 1000, // every hours
+			    latitude: -26.326160,  //defaults to Konya / Meram.
+			    longitude: 26.817346,
+			    timeZoneString: "Africa/Johannesburg", // https://www.php.net/manual/en/timezones.php
+			    method: 3, //You can see in below the config.
+			    school: 0, //"school" - Optional. 0 for Shafii, 1 for Hanfi. If you leave this empty, it defaults to Shafii.
+				header: "Salaah Times", // Added header default value
+       			adhanEnabled: false	// Initial button state // Add a default value for adhan playback enabled/disabled		    
+	    }
+	}, 
 ````
 ````javascript
 METHODS:
