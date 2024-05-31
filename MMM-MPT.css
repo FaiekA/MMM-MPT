@@ -5,20 +5,63 @@
     text-align: center;
 }
 
-/* CSS styles for elements with class 'st-ipt' */
-.standard-ipt {
-    color: green; /* Set default text color to green */
-    font-size: 25px; /* Set default font size */
-    /* Add any other default styles you require */
-    border-bottom: 1px solid var(--color-text-dimmed);
-    padding: 5px 0; /* Add spacing between items and time */   
+
+.next-prayer .prayer-time-value {
+    color: orange;
+}
+
+/* General Prayer Time Styling */
+.prayer-time {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 25px;  
+    border-bottom: 1px solid var(--color-text-dimmed);     
+}
+
+.prayer-name {
+    flex: 1;
+    text-align: left;
+    color: green;
+    font-size: 30px;
+}
+
+.prayer-time-value {
+    flex: 1;
+    text-align: center;
+    color: rgb(242, 245, 242);
+    font-size: 28px;
+}
+
+
+.upcoming-prayer .prayer-time-value {
+    font-weight: bold;    
+    color: rgb(253, 6, 6);
+}
+
+
+/* Current Prayer Time Styling */
+.current-prayer {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.flash {
+    animation: flash-animation 1s infinite;
+}
+
+@keyframes flash-animation {
+    0% { background-color: yellow; }
+    50% { background-color: inherit; }
+    100% { background-color: yellow; }
 }
 
 /* Adhan Toggle Button Styling */
 .toggle-button {
     display: inline-block;
     padding: 10px 20px;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 22px;
     cursor: pointer;
     border: 2px solid #333;
     border-radius: 5px;
@@ -26,7 +69,7 @@
     color: #333;
     transition: background-color 0.3s, color 0.3s;
     height: 50px; /* Set button height */
-    width: 150px; /* Set button width */    
+    width: 210px; /* Set button width */    
     margin-top: 20px; /* Add margin to create space between prayer times and button */    
 }
 
@@ -35,16 +78,6 @@
     color: #fff;
 }
 
-/* Flashing effect */
-.flash {
-    animation: flash 1s infinite;
-}
-
-@keyframes flash {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-
-
+.MMM-MPT .module-content {
+    width: 300px; /* adjust this to taste */
+   }

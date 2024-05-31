@@ -1,31 +1,4 @@
 Module.register("MMM-MPT", {
-    /*
-     * This module uses http://api.aladhan.com/timings/ to fetch Prayer
-     * Timings. One caveat here is the the timings api assumes the
-     * unix timestamp in seconds and hence make sure to use this to
-     * get the timestamp:
-     * Math.floor(Date.now()/1000) 
-     * It also uses islamcan.com for the Adhan audio file.	 
-     * This module uses the existing built-in module to copy the code
-     * structure and develop on top of this.
-    Methods:
-        1 - Muslim World League
-        2 - Islamic Society of North America
-        3 - Egyptian General Authority of Survey
-        4 - Umm Al-Qura University, Makkah
-        5 - University of Islamic Sciences, Karachi
-        6 - Institute of Geophysics, University of Tehran
-        7 - Shia Ithna-Ashari, Leva Institute, Qum
-        8 - Gulf Region
-        9 - Kuwait
-        10 - Qatar
-        11 - Majlis Ugama Islam Singapura, Singapore
-        12 - Union Organization islamic de France
-        13 - Diyanet İşleri Başkanlığı, Turkey
-        14 - Spiritual Administration of Muslims of Russia
-
-    Thanks for the [eulhaque](https://github.com/eulhaque).
-     */
         defaults: {
             updateInterval: 4 * 60 * 60 * 1000, // every 4 hours
             initLoadDelay: 0,
@@ -88,96 +61,142 @@ Module.register("MMM-MPT", {
                 Log.info("Playing adhan now. SRC: " + this.config.adhanSrc);
                 var audio = new Audio(this.file("adhan.mp3")); // assuming adhan.mp3 is the name of your local audio file
                 audio.play();
-    
+        
                 // Add the flash effect to the current prayer time entry
                 var currentPrayerDiv = document.getElementById("currentPrayer");
                 if (currentPrayerDiv) {
                     currentPrayerDiv.classList.add("flash");
-    
-                    // Remove the flash effect after one minute
+        
+                    // Remove the flash effect after two minutes
                     setTimeout(function() {
                         currentPrayerDiv.classList.remove("flash");
-                    }, 60 * 2000);
+                    }, 2 * 60 * 1000); // Two minutes in milliseconds
                 }
             }
-        },
-    
-        // Override dom generator.
-        getDom: function() {
-            var wrapper = document.createElement("div");
-    
-            // Add header to the module
-            if (this.config.header) {
-                var header = document.createElement("header");
-                header.innerHTML = this.config.header;
-                header.className = "module-header"; // Add a class for styling
-                wrapper.appendChild(header);
-            }
-    
-            if (this.loaded) {
-                var timings = this.result.data.timings;
-                var keys = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-                var dates = {};
-    
-                for (var i = 0; i < keys.length; ++i) {
-                    var key = keys[i];
-                    var date = this.getDateObj(timings[key]);
-                    dates[key] = date;
-    
-                    // Schedule the playAdhan function to be called at the prayer time
-                    var now = new Date();
-                    if (date > now) {
-                        var timeUntilAdhan = date - now;
-                        setTimeout(this.playAdhan.bind(this), timeUntilAdhan);
-                    }
-                }
-    
-                for (var i = 0; i < keys.length; ++i) {
-                    var key = keys[i];
-                    var div = document.createElement("div");
-                    div.className = "standard-ipt";
-                    div.innerHTML = key + " " + this.getFormattedTime(timings[key]);
-                    div.id = key === this.currentPrayer ? "currentPrayer" : ""; // Assign ID if it's the current prayer
-                    wrapper.appendChild(div);
-                }
-    
-                // Create a button for toggling adhan playback
-                var toggleAdhanButton = document.createElement("button");
-                toggleAdhanButton.innerHTML = this.config.adhanEnabled ? "Disable Adhan" : "Enable Adhan";
-                toggleAdhanButton.className = "toggle-button"; // Correct class name for styling
-                toggleAdhanButton.addEventListener("click", this.toggleAdhanPlayback.bind(this));
-                wrapper.appendChild(toggleAdhanButton);
-            } else {
-                wrapper.innerHTML = "Loading...";
-                Log.info("Still not loaded yet");
-            }
-            
-            return wrapper;
         },
         
-        processTimings: function(data) {
-            this.loaded = true;
-            this.result = data;
+        
     
-            // Determine the current prayer
+// Override dom generator.
+getDom: function() {
+    var wrapper = document.createElement("div");
+
+    // Add header to the module
+    if (this.config.header) {
+        var header = document.createElement("header");
+        header.innerHTML = this.config.header;
+        header.className = "module-header"; // Add a class for styling
+        wrapper.appendChild(header);
+    }
+
+    if (this.loaded) {
+        var timings = this.result.data.timings;
+        var keys = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        var dates = {};
+
+        for (var i = 0; i < keys.length; ++i) {
+            var key = keys[i];
+            var date = this.getDateObj(timings[key]);
+            dates[key] = date;
+
+            // Schedule the playAdhan function to be called at the prayer time
             var now = new Date();
-            var timings = this.result.data.timings;
-            var keys = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-            var dates = {};
-    
-            for (var i = 0; i < keys.length; ++i) {
-                var key = keys[i];
-                var date = this.getDateObj(timings[key]);
-                dates[key] = date;
-    
-                if (date > now) {
-                    this.currentPrayer = key;
-                    break;
-                }
+            if (date > now) {
+                var timeUntilAdhan = date - now;
+                setTimeout(this.playAdhan.bind(this), timeUntilAdhan);
             }
+        }
+
+        for (var i = 0; i < keys.length; ++i) {
+            var key = keys[i];
+            var prayerDiv = document.createElement("div");
+            prayerDiv.className = "prayer-time";
+            prayerDiv.id = key === this.currentPrayer ? "currentPrayer" : ""; // Assign ID if it's the current prayer
+
+            // Create and append the prayer name div
+            var nameDiv = document.createElement("div");
+            nameDiv.className = "prayer-name";
+            nameDiv.innerHTML = key;
+            prayerDiv.appendChild(nameDiv);
+
+            // Create and append the prayer time div
+            var timeDiv = document.createElement("div");
+            timeDiv.className = "prayer-time-value";
+            timeDiv.innerHTML = this.getFormattedTime(timings[key]);
+            prayerDiv.appendChild(timeDiv);
+
+            wrapper.appendChild(prayerDiv);
+        }
+
+        // Identify the upcoming and next prayer
+        var upcomingPrayer = null;
+        var nextPrayer = null;
+        for (var i = 0; i < keys.length; ++i) {
+            var key = keys[i];
+            if (dates[key] > new Date()) {
+                upcomingPrayer = key;
+                nextPrayer = keys[i + 1]; // Get the next prayer time
+                break;
+            }
+        }
+
+        // Style the upcoming prayer time in orange
+        if (upcomingPrayer) {
+            var upcomingPrayerDiv = document.getElementById(upcomingPrayer);
+            if (upcomingPrayerDiv) {
+                upcomingPrayerDiv.classList.add("upcoming-prayer");
+            }
+        }
+
+        // Style the next prayer time in orange until its scheduled time
+        if (nextPrayer) {
+            var nextPrayerDiv = document.getElementById(nextPrayer);
+            if (nextPrayerDiv) {
+                nextPrayerDiv.classList.add("next-prayer");
+            }
+        }
+
+        // Create a button for toggling adhan playback
+        var toggleAdhanButton = document.createElement("button");
+        toggleAdhanButton.innerHTML = this.config.adhanEnabled ? "Disable Adhan" : "Enable Adhan";
+        toggleAdhanButton.className = "toggle-button"; // Correct class name for styling
+        toggleAdhanButton.addEventListener("click", this.toggleAdhanPlayback.bind(this));
+        wrapper.appendChild(toggleAdhanButton);
+    } else {
+        wrapper.innerHTML = "Loading...";
+        Log.info("Still not loaded yet");
+    }
     
-            this.updateDom(this.config.animationSpeed);
-        },
+    return wrapper;
+},
+
+
+
+
+    processTimings: function(data) {
+        this.loaded = true;
+        this.result = data;
+
+        // Determine the current prayer
+        var now = new Date();
+        var timings = this.result.data.timings;
+        var keys = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        var dates = {};
+
+        for (var i = 0; i < keys.length; ++i) {
+            var key = keys[i];
+            var date = this.getDateObj(timings[key]);
+            dates[key] = date;
+
+            if (date > now) {
+                this.currentPrayer = key;
+                break;
+            }
+        }
+
+        this.updateDom(this.config.animationSpeed);
+    },
+
     
         updateTimings: function() {
             var currentDate = new Date();
