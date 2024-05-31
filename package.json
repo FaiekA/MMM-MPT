@@ -1,0 +1,35 @@
+{
+    "name": "MMM-MPT",
+    "version": "1.0.0",
+    "description": "A MagicMirror module to display Islamic Prayer Times with audio Adhan playback.",
+    "main": "MMM-IPT.js",
+    "scripts": {
+      "start": "node_modules/.bin/electron js/electron.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "FaiekA",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/FaiekA/MMM-IPT.git"
+    },
+    "keywords": [
+      "magicmirror",
+      "module",
+      "adhan",
+      "prayer times",
+      "islamic",
+      "muslim"
+    ],
+    "config": {
+      "latitude": 37.861676,
+      "longitude": 32.4641803,
+      "timeZoneString": "Europe/Istanbul",
+      "method": 13,
+      "timingsApi": "http://api.aladhan.com/v1/timings/",
+      "school": 1,
+      "adhanEnabled": true,
+      "header": "Salaah Times"
+    }
+  }
+  
