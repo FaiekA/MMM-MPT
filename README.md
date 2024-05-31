@@ -1,6 +1,9 @@
 # MMM-MPT
 Magic Mirror Module of Muslim Prayer Times
 
+![Screenshot 2024-05-31 174912](https://github.com/FaiekA/MMM-MPT/assets/52759676/6e411329-5847-400b-8bb7-f1d3a99e3f0a)
+
+
 #config 
 To add the module do the following which also shows the configurable values:
 
@@ -48,4 +51,4 @@ cd ~/MagicMirror/modules
 git clone https://github.com/uok825/MMM-IPT.git
 Copy-Paste config texts. Thanks.
 ````
-Thanks for the [eulhaque](https://github.com/eulhaque).
+Thanks for to 
