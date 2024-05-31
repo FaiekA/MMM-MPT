@@ -49,7 +49,7 @@ METHODS:
 # Install the module
 ````javascript
 cd ~/MagicMirror/modules
-git clone [https://github.com/uok825/MMM-IPT.git](https://github.com/FaiekA/MMM-MPT.git)
+git clone https://github.com/uok825/MMM-IPT.git
 Copy-Paste config texts. Thanks.
 ````
 Thanks for to  uok825/MMM-IPT
